@@ -45,8 +45,7 @@ setwd("C:/Users/Pei-Chun/Documents/R/Machine learning")
 trainRaw <- read.csv("./pml-training.csv",header=T,sep=",",na.strings=c("NA",""))
 testRaw <- read.csv("./pml-testing.csv",header=T,sep=",",na.strings=c("NA",""))
 ```
-The training data set contains 19622 observations and 160 variables, while the testing data set contains 20 observations and 160 variables. The ¡§classe¡¨ variable in the training set is the outcome to predict.  
-
+  
 ##Data Sets Partitioning Definitions
 The data partitions of training and validating data sets are created as below:  
 ```{r,cache=TRUE}
@@ -60,7 +59,7 @@ Since a random forest model is chosen and the data set must first be checked on 
   
 The decision is made whereby all the columns that having less than 60% of data filled are removed.  
 ```{r,cache=TRUE}  
-sum((colSums(!is.na(training[,-ncol(training)])) < 0.6*nrow(training))) # Number of columns with less than 60% of data
+sum((colSums(!is.na(training[,-ncol(training)])) < 0.6*nrow(training)))
 ```
 Next, the criteria to remove columns that do not satisfy is applied before applying to the model.  
 ```{r,cache=TRUE}
@@ -88,7 +87,7 @@ The accurancy for the validating data set is calculated with the following formu
 acrcy<-c(as.numeric(predict(model,newdata=validating[,-ncol(validating)])==validating$classe))
 acrcy<-sum(acrcy)*100/nrow(validating)
 ```
-Model Accuracy as tested over Validation set = 99.8725465% The out-of-sample error is 0.13%, which is pretty low.  
+Model Accuracy as tested over Validation set = 99.73% The out-of-sample error is only 0.17%.
   
 ##Model Test
 For the model testing, the new values are predicted using the testing dataset provided which was loaded earlier. Data cleaning was first performed and all columns of Testing data set are coerced for the same class of previous data set.  
@@ -110,16 +109,4 @@ row.names(testing) <- c(100, 1:20)
 predictions <- predict(model,newdata=testing[-1,])
 predictions
 ```
-##Generation of Answers Files for Assignment Submission
-The following function pml_write_files is to create the answers files for the Prediction Assignment Submission:
-```{r,cache=TRUE}
- pml_write_files = function(x){
-     n = length(x)
-     for(i in 1:n){
-         filename = paste0("./answers/problem_id_",i,".txt")
-         write.table(x[i],file=filename,quote=FALSE,row.names=FALSE,col.names=FALSE)
-     }
- }
- 
- pml_write_files(predictions)
-```
+We submitted these prediction ot the quzz and all are correct. 
