@@ -1,0 +1,9 @@
+base
+lattice
+ggplot2
+caret
+rpart
+knitr
+randomForest
+ElemStatLearn
+corrplot
